@@ -37,17 +37,17 @@ volPer = 0
 while True:
     success, img = cap.read()
     img = detector.findHands(img)
-    lmList = detector.findPosition(img, draw=False)
+    lmList1, bbox = detector.findPosition(img, draw=False)
 
 
 
     # MAIN PART
-    if len(lmList) != 0:
+    if len(lmList1) != 0:
         # print(lmList[4], lmList[8])
 
         # iNdex 4 for thumb and 8 for index
-        x1, y1 = lmList[4][1], lmList[4][2]
-        x2, y2 = lmList[8][1], lmList[8][2]
+        x1, y1 = lmList1[4][1], lmList1[4][2]
+        x2, y2 = lmList1[8][1], lmList1[8][2]
         cx, cy = (x1 + x2) // 2, (y1 + y2) // 2
 
         # to confirm
@@ -76,7 +76,7 @@ while True:
         if length <50:
             cv2.circle(img, (cx, cy), 15, (0, 0, 255), cv2.FILLED)
     cv2.rectangle(img, (900, 150), (950, 400), (0, 255, 0), 3)    #initial position  ENDING POSITION   colour
-    cv2.rectangle(img, (900, int(volBar)), (950, 400), (100, 105, 0), cv2.FILLED)
+    cv2.rectangle(img, (900 , int(volBar)), (950, 400), (100, 105, 0), cv2.FILLED)
     cv2.putText(img, f'{int(volPer)} %', (40, 450), cv2.FONT_HERSHEY_COMPLEX,
                 1, (255, 50, 0), 3)
 
