@@ -1,31 +1,22 @@
-import cv2
+import mediapipe as mp
 import time
 import HandTrackingModule as htm
+import cv2
 
-
-p_Time = 0
-curr_Time = 0
-
-cam = cv2.VideoCapture(0)
-
-#  TEsT
+pTime = 0
+cTime = 0
+cap = cv2.VideoCapture(0)
 detector = htm.handDetector()
-
-while (True):
-    success, img = cam.read()
-
-    img = detector.findHands(img,draw = True )  # FUnction 1
-    hand_lm = detector.findPosition(img , draw = False)
-    if len(hand_lm) != 0:
-        print(hand_lm[4])  # TIP of thumb
-
-    # Frames per second
-    curr_time = time.time()
-    fps = 1 / (curr_time) - (p_Time)
-    p_Time = curr_Time
-
-    cv2.putText(img, str(int(self.number_of_hands)), (10, 60), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 0),
-                3)  # position , font, scale , colour, thickness
-
+while True:
+    success, img = cap.read()
+    img = detector.findHands(img, draw=True )
+    lmList = detector.findPosition(img, draw=False)
+    if len(lmList) != 0:
+        print(lmList[0])
+    cTime = time.time()
+    fps = 1 / (cTime - pTime)
+    pTime = cTime
+    cv2.putText(img, str(int(fps)), (10, 70), cv2.FONT_HERSHEY_PLAIN, 3,
+                (255, 0, 255), 3)
     cv2.imshow("Image", img)
     cv2.waitKey(1)
